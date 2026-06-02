@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Xcode — état utilisateur & build
+xcuserdata/
+*.xcuserstate
+build/
+DerivedData/
+*.xcscmblueprint
+*.xccheckout
+
+# Config locale Claude Code (UUID simulateur, chemins perso)
+.claude/settings.local.json
+
+# Clé Logo.dev personnelle — ne jamais publier
+Config/Secrets.local.xcconfig
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+
+# Optionnel : le projet Xcode est généré par XcodeGen (`xcodegen generate`).
+# Décommente la ligne suivante si tu préfères ne versionner que project.yml.
+# SubTrack.xcodeproj/

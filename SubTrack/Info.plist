@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Token Logo.dev injecté depuis Config/Secrets.xcconfig (variable de build).
+	     Les autres clés (CFBundle*, launch screen, orientations) sont fusionnées
+	     automatiquement par GENERATE_INFOPLIST_FILE. -->
+	<key>LOGODEV_TOKEN</key>
+	<string>$(LOGODEV_TOKEN)</string>
+</dict>
+</plist>

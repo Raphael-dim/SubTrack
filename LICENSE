@@ -1,0 +1,38 @@
+MIT License
+
+Copyright (c) 2026 Raphaël Dimeck
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+NOTE ON THIRD-PARTY BRAND LOGOS / NOTE SUR LES LOGOS DE MARQUES TIERCES
+
+The MIT license above applies ONLY to the source code authored for this
+project. Brand logos are NOT bundled in this repository: they are fetched at
+runtime from third-party services (e.g. logo.dev, favicon providers) based on
+each service's domain. These logos are the trademarks and property of their
+respective owners and are displayed only to identify the corresponding
+services. Their display does not imply any affiliation with or endorsement by
+these brands. If you reuse this project, you are responsible for complying with
+each brand's and each logo provider's terms of use.
+
+La licence MIT ci-dessus couvre UNIQUEMENT le code source de ce projet. Aucun
+logo de marque n'est stocké dans ce dépôt : ils sont récupérés à distance au
+moment de l'exécution et restent la propriété de leurs détenteurs respectifs.
