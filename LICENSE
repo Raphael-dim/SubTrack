@@ -19,20 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-NOTE ON THIRD-PARTY BRAND LOGOS / NOTE SUR LES LOGOS DE MARQUES TIERCES
-
-The MIT license above applies ONLY to the source code authored for this
-project. Brand logos are NOT bundled in this repository: they are fetched at
-runtime from third-party services (e.g. logo.dev, favicon providers) based on
-each service's domain. These logos are the trademarks and property of their
-respective owners and are displayed only to identify the corresponding
-services. Their display does not imply any affiliation with or endorsement by
-these brands. If you reuse this project, you are responsible for complying with
-each brand's and each logo provider's terms of use.
-
-La licence MIT ci-dessus couvre UNIQUEMENT le code source de ce projet. Aucun
-logo de marque n'est stocké dans ce dépôt : ils sont récupérés à distance au
-moment de l'exécution et restent la propriété de leurs détenteurs respectifs.

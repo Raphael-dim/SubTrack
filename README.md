@@ -58,8 +58,9 @@ Sans token, l'app fonctionne quand même (favicons puis monogramme).
 Les logos affichés sont des marques déposées appartenant à leurs propriétaires
 respectifs ; ils sont récupérés à distance et ne sont **pas redistribués** dans
 ce dépôt. Leur affichage sert uniquement à identifier les services. Voir
-[LICENSE](LICENSE) pour les détails.
+[NOTICE.md](NOTICE.md) pour les détails.
 
 ## Licence
 
 Le code source est distribué sous licence MIT — voir [LICENSE](LICENSE).
+Les logos de marque ne sont pas couverts par cette licence — voir [NOTICE.md](NOTICE.md).
