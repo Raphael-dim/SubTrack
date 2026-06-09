@@ -29,14 +29,14 @@ struct CategoryDonutChart: View {
         .chartLegend(.hidden)
         .frame(height: 200)
         .overlay { centerLabel }
-        .accessibilityLabel("Répartition des dépenses mensuelles par catégorie")
+        .accessibilityLabel(L.t("Répartition des dépenses mensuelles par catégorie"))
         .accessibilityValue(accessibilitySummary)
     }
 
     /// Résumé textuel du donut pour VoiceOver (le graphique n'est pas lisible seul).
     private var accessibilitySummary: String {
         breakdown
-            .map { "\($0.category.displayName) \($0.share.formatted(.percent.precision(.fractionLength(0))))" }
+            .map { "\($0.category.displayName) \($0.share.formatted(.percent.precision(.fractionLength(0)).locale(AppLocale.current)))" }
             .joined(separator: ", ")
     }
 
@@ -53,7 +53,7 @@ struct CategoryDonutChart: View {
 
     private var centerLabel: some View {
         VStack(spacing: 2) {
-            Text("par mois")
+            Text(L.t("par mois"))
                 .font(.caption)
                 .foregroundStyle(Theme.Palette.textSecondary)
             Text(centerTotal.currencyFormatted())

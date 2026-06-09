@@ -14,6 +14,9 @@ struct CalendarView: View {
     @Query(sort: \Subscription.nextBillingDate) private var subscriptions: [Subscription]
     @State private var viewModel = CalendarViewModel()
 
+    /// Espace de noms partagé pour la transition zoom ligne → détail.
+    @Namespace private var detailTransition
+
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 7)
 
     var body: some View {
@@ -26,10 +29,14 @@ struct CalendarView: View {
                 .padding(Theme.Spacing.md)
             }
             .background(Theme.Palette.background.ignoresSafeArea())
-            .navigationTitle("Calendrier")
+            .navigationTitle(L.t("Calendrier"))
+            .navigationDestination(for: Subscription.self) { subscription in
+                SubscriptionDetailView(subscription: subscription)
+                    .navigationTransition(.zoom(sourceID: subscription.id, in: detailTransition))
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Aujourd'hui") { withAnimation(.snappy) { viewModel.goToToday() } }
+                    Button(L.t("Aujourd'hui")) { withAnimation(.snappy) { viewModel.goToToday() } }
                 }
             }
         }
@@ -49,7 +56,7 @@ struct CalendarView: View {
                 grid
                 Divider().overlay(Theme.Palette.glassBorder)
                 HStack {
-                    Text("Total du mois")
+                    Text(L.t("Total du mois"))
                         .font(.subheadline)
                         .foregroundStyle(Theme.Palette.textSecondary)
                     Spacer()
@@ -107,7 +114,7 @@ struct CalendarView: View {
             withAnimation(.snappy) { viewModel.select(day) }
         } label: {
             VStack(spacing: 3) {
-                Text(day.formatted(.dateTime.day()))
+                Text(day.formatted(.dateTime.day().locale(AppLocale.current)))
                     .font(.callout.weight(today ? .bold : .regular))
                     .foregroundStyle(dayTextColor(inMonth: inMonth, selected: selected, today: today))
                 Circle()
@@ -143,7 +150,7 @@ struct CalendarView: View {
         return GlassCard {
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
                 HStack {
-                    Text(viewModel.selectedDay.formatted(.dateTime.weekday(.wide).day().month()))
+                    Text(viewModel.selectedDay.formatted(.dateTime.weekday(.wide).day().month().locale(AppLocale.current)))
                         .font(.headline)
                         .foregroundStyle(Theme.Palette.textPrimary)
                     Spacer()
@@ -155,23 +162,31 @@ struct CalendarView: View {
                 }
 
                 if items.isEmpty {
-                    Text("Aucun prélèvement ce jour-là.")
+                    Text(L.t("Aucun prélèvement ce jour-là."))
                         .font(.subheadline)
                         .foregroundStyle(Theme.Palette.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, Theme.Spacing.xs)
                 } else {
                     ForEach(items) { sub in
-                        HStack(spacing: Theme.Spacing.sm) {
-                            IconBadge(systemName: sub.iconSystemName, tint: Color(hex: sub.accentColorHex),
-                                      brandName: sub.name, domain: sub.brandDomain, size: 34)
-                            Text(sub.name)
-                                .foregroundStyle(Theme.Palette.textPrimary)
-                            Spacer()
-                            Text(sub.effectivePrice.currencyFormatted(currencyCode: sub.currencyCode))
-                                .font(.subheadline)
-                                .foregroundStyle(Theme.Palette.textSecondary)
+                        NavigationLink(value: sub) {
+                            HStack(spacing: Theme.Spacing.sm) {
+                                IconBadge(systemName: sub.iconSystemName, tint: Color(hex: sub.accentColorHex),
+                                          brandName: sub.name, domain: sub.brandDomain, size: 34)
+                                Text(sub.name)
+                                    .foregroundStyle(Theme.Palette.textPrimary)
+                                Spacer()
+                                Text(sub.effectivePrice.currencyFormatted(currencyCode: sub.currencyCode))
+                                    .font(.subheadline)
+                                    .foregroundStyle(Theme.Palette.textSecondary)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(Theme.Palette.textSecondary)
+                            }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
+                        .matchedTransitionSource(id: sub.id, in: detailTransition)
                     }
                 }
             }

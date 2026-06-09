@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <rect width="500" height="500" rx="115" ry="115" fill="#1C1C1E"/>
+
+  <!-- Pattes — dessinées avant le corps pour que le fill du corps les masque en haut -->
+  <g stroke="#F2EDE3" stroke-width="20" stroke-linecap="round">
+    <line x1="192" y1="355" x2="192" y2="450"/>
+    <line x1="226" y1="366" x2="226" y2="452"/>
+    <line x1="280" y1="368" x2="280" y2="452"/>
+    <line x1="314" y1="360" x2="314" y2="448"/>
+  </g>
+
+  <!-- Queue en tire-bouchon — dessinée avant le corps -->
+  <path d="M 407 268 C 436 250 444 283 425 296 C 413 304 400 291 412 279"
+        stroke="#F2EDE3" stroke-width="13" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Corps principal (fill masque le haut des pattes) -->
+  <ellipse cx="265" cy="292" rx="148" ry="110"
+           fill="#1C1C1E" stroke="#F2EDE3" stroke-width="13"/>
+
+  <!-- Groin — dépasse à gauche du corps -->
+  <ellipse cx="116" cy="307" rx="38" ry="28"
+           fill="#1C1C1E" stroke="#F2EDE3" stroke-width="13"/>
+
+  <!-- Oreille — juste au-dessus du bord haut du corps -->
+  <ellipse cx="180" cy="190" rx="21" ry="17"
+           fill="#1C1C1E" stroke="#F2EDE3" stroke-width="13"/>
+
+  <!-- Pièce au-dessus du dos du cochon -->
+  <circle cx="240" cy="90" r="30"
+          fill="none" stroke="#F2EDE3" stroke-width="13"/>
+
+  <!-- Œil -->
+  <circle cx="152" cy="290" r="7" fill="#F2EDE3"/>
+</svg>

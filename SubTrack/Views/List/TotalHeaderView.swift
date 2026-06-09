@@ -17,7 +17,7 @@ struct TotalHeaderView: View {
     var body: some View {
         GlassCard(padding: Theme.Spacing.lg) {
             VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-                Text("Dépense mensuelle")
+                Text(L.t("Dépense mensuelle"))
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.Palette.textSecondary)
 
@@ -30,11 +30,11 @@ struct TotalHeaderView: View {
 
                 HStack(spacing: Theme.Spacing.sm) {
                     Label(
-                        "\(yearlyTotal.currencyFormatted()) / an",
+                        L.t("%@ / an", yearlyTotal.currencyFormatted()),
                         systemImage: "calendar"
                     )
                     Label(
-                        "\(activeCount) actifs",
+                        L.t("%d actifs", activeCount),
                         systemImage: "checkmark.seal.fill"
                     )
                 }

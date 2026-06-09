@@ -11,28 +11,34 @@ import SwiftUI
 struct AppRootView: View {
 
     @AppStorage(PreferenceKey.appearanceMode) private var appearanceRaw = AppearanceMode.system.rawValue
+    @AppStorage(PreferenceKey.appLanguage) private var languageRaw = AppLanguage.system.rawValue
 
     private var appearance: AppearanceMode {
         AppearanceMode(rawValue: appearanceRaw) ?? .system
     }
 
+    private var language: AppLanguage {
+        AppLanguage(rawValue: languageRaw) ?? .system
+    }
+
     var body: some View {
         TabView {
-            Tab("Abonnements", systemImage: "list.bullet.rectangle.fill") {
+            Tab(L.t("Abonnements"), systemImage: "list.bullet.rectangle.fill") {
                 SubscriptionListView()
             }
-            Tab("Calendrier", systemImage: "calendar") {
+            Tab(L.t("Calendrier"), systemImage: "calendar") {
                 CalendarView()
             }
-            Tab("Statistiques", systemImage: "chart.pie.fill") {
+            Tab(L.t("Statistiques"), systemImage: "chart.pie.fill") {
                 StatsView()
             }
-            Tab("Réglages", systemImage: "gearshape.fill") {
+            Tab(L.t("Réglages"), systemImage: "gearshape.fill") {
                 SettingsView()
             }
         }
         .tint(Theme.Palette.appAccent)
         .preferredColorScheme(appearance.colorScheme)
+        .environment(\.locale, language.locale ?? .autoupdatingCurrent)
     }
 }
 

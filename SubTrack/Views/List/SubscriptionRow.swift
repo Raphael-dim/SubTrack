@@ -53,7 +53,7 @@ struct SubscriptionRow: View {
     private var priceLine: some View {
         let cycle = subscription.billingCycle.displayName
         if subscription.isInTrial {
-            Text("Essai gratuit · \(cycle)")
+            Text(L.t("Essai gratuit · %@", cycle))
                 .font(.subheadline)
                 .foregroundStyle(Theme.Palette.textSecondary)
                 .lineLimit(1)
@@ -63,13 +63,13 @@ struct SubscriptionRow: View {
                 Text(subscription.price.currencyFormatted(currencyCode: subscription.currencyCode))
                     .strikethrough()
                     .foregroundStyle(Theme.Palette.textSecondary.opacity(0.7))
-                Text("· \(cycle)").foregroundStyle(Theme.Palette.textSecondary)
+                Text(L.t("· %@", cycle)).foregroundStyle(Theme.Palette.textSecondary)
             }
             .font(.subheadline)
             .foregroundStyle(Theme.Palette.textSecondary)
             .lineLimit(1)
         } else {
-            Text("\(subscription.price.currencyFormatted(currencyCode: subscription.currencyCode)) · \(cycle)")
+            Text(L.t("%@ · %@", subscription.price.currencyFormatted(currencyCode: subscription.currencyCode), cycle))
                 .font(.subheadline)
                 .foregroundStyle(Theme.Palette.textSecondary)
                 .lineLimit(1)
@@ -81,9 +81,9 @@ struct SubscriptionRow: View {
     @ViewBuilder
     private var statusTag: some View {
         if subscription.isInTrial {
-            tag("Essai", color: Color(hex: "#30D158"))
+            tag(L.t("Essai"), color: Color(hex: "#30D158"))
         } else if subscription.isPromoActive {
-            tag("Promo", color: Color(hex: "#FF9F0A"))
+            tag(L.t("Promo"), color: Color(hex: "#FF9F0A"))
         }
     }
 
@@ -115,16 +115,16 @@ struct SubscriptionRow: View {
 
     private func billingText(forDays days: Int) -> String {
         switch days {
-        case ..<0:  "En retard"
-        case 0:     "Aujourd'hui"
-        case 1:     "Demain"
-        default:    "Dans \(days) j"
+        case ..<0:  L.t("En retard")
+        case 0:     L.t("Aujourd'hui")
+        case 1:     L.t("Demain")
+        default:    L.t("Dans %d j", days)
         }
     }
 
     private var accessibilityLabel: String {
-        let status = subscription.isActive ? "" : ", en pause"
-        return "\(subscription.name), \(subscription.price.currencyFormatted()) \(subscription.billingCycle.displayName)\(status)"
+        let status = subscription.isActive ? "" : L.t(", en pause")
+        return L.t("%@, %@ %@", subscription.name, subscription.price.currencyFormatted(), subscription.billingCycle.displayName) + status
     }
 }
 

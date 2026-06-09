@@ -33,7 +33,7 @@ struct SubscriptionListView: View {
         NavigationStack {
             content(viewModel)
                 .background(Theme.Palette.background.ignoresSafeArea())
-                .navigationTitle("Abonnements")
+                .navigationTitle(L.t("Abonnements"))
                 .toolbar { toolbarContent }
                 .navigationDestination(for: Subscription.self) { subscription in
                     SubscriptionDetailView(subscription: subscription)
@@ -85,7 +85,7 @@ struct SubscriptionListView: View {
             .scrollDismissesKeyboard(.immediately)
             .searchable(
                 text: bindingForSearch(viewModel),
-                prompt: "Rechercher un abonnement"
+                prompt: L.t("Rechercher un abonnement")
             )
         }
     }
@@ -101,14 +101,14 @@ struct SubscriptionListView: View {
                 toggleActive(subscription)
             } label: {
                 Label(
-                    subscription.isActive ? "Mettre en pause" : "Réactiver",
+                    subscription.isActive ? L.t("Mettre en pause") : L.t("Réactiver"),
                     systemImage: subscription.isActive ? "pause.circle" : "play.circle"
                 )
             }
             Button(role: .destructive) {
                 delete(subscription)
             } label: {
-                Label("Supprimer", systemImage: "trash")
+                Label(L.t("Supprimer"), systemImage: "trash")
             }
         }
     }
@@ -117,11 +117,11 @@ struct SubscriptionListView: View {
 
     private var emptyState: some View {
         ContentUnavailableView {
-            Label("Aucun abonnement", systemImage: "tray")
+            Label(L.t("Aucun abonnement"), systemImage: "tray")
         } description: {
-            Text("Ajoutez votre premier abonnement pour suivre vos dépenses.")
+            Text(L.t("Ajoutez votre premier abonnement pour suivre vos dépenses."))
         } actions: {
-            Button("Ajouter", systemImage: "plus") { isPresentingEditor = true }
+            Button(L.t("Ajouter"), systemImage: "plus") { isPresentingEditor = true }
                 .buttonStyle(.borderedProminent)
         }
     }
@@ -144,13 +144,13 @@ struct SubscriptionListView: View {
             } label: {
                 Image(systemName: "plus")
             }
-            .accessibilityLabel("Ajouter un abonnement")
+            .accessibilityLabel(L.t("Ajouter un abonnement"))
         }
     }
 
     private func sortMenu(_ viewModel: SubscriptionListViewModel) -> some View {
         Menu {
-            Picker("Trier par", selection: bindingForSort(viewModel)) {
+            Picker(L.t("Trier par"), selection: bindingForSort(viewModel)) {
                 ForEach(SubscriptionListViewModel.SortOption.allCases) { option in
                     Text(option.displayName).tag(option)
                 }
@@ -158,7 +158,7 @@ struct SubscriptionListView: View {
         } label: {
             Image(systemName: "arrow.up.arrow.down")
         }
-        .accessibilityLabel("Trier")
+        .accessibilityLabel(L.t("Trier"))
     }
 
     // MARK: Actions (CRUD délégué au service construit à la volée)
@@ -199,7 +199,7 @@ private struct CategoryFilterBar: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Theme.Spacing.xs) {
-                chip(title: "Tout", symbol: "square.grid.2x2", isOn: selection == nil) {
+                chip(title: L.t("Tout"), symbol: "square.grid.2x2", isOn: selection == nil) {
                     selection = nil
                 }
                 ForEach(SubscriptionCategory.allCases) { category in

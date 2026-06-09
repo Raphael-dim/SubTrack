@@ -11,9 +11,11 @@ import Foundation
 extension Decimal {
 
     /// Représentation localisée d'un montant, ex. `"9,99 €"`.
-    /// - Parameter currencyCode: code ISO 4217 (ex. `"EUR"`).
-    func currencyFormatted(currencyCode: String = "EUR") -> String {
-        formatted(.currency(code: currencyCode))
+    /// - Parameter currencyCode: code ISO 4217 (ex. `"EUR"`). Par défaut, la
+    ///   devise globale choisie dans les Réglages. Le formatage (symbole,
+    ///   séparateurs) suit la langue sélectionnée via `AppLocale`.
+    func currencyFormatted(currencyCode: String = AppCurrency.current.code) -> String {
+        formatted(.currency(code: currencyCode).locale(AppLocale.current))
     }
 
     /// Conversion sûre vers `Double` pour les composants qui l'exigent

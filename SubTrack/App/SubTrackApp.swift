@@ -20,7 +20,9 @@ struct SubTrackApp: App {
         // Valeurs par défaut des préférences avant toute lecture.
         UserDefaults.standard.register(defaults: [
             PreferenceKey.devSeedEnabled: true,
-            PreferenceKey.reminderLeadDays: 2
+            PreferenceKey.reminderLeadDays: 2,
+            PreferenceKey.appLanguage: AppLanguage.system.rawValue,
+            PreferenceKey.currencyCode: AppCurrency.eur.rawValue
         ])
 
         let configuration = ModelConfiguration(

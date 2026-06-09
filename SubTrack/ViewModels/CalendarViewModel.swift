@@ -44,7 +44,7 @@ final class CalendarViewModel {
     // MARK: Navigation
 
     var monthTitle: String {
-        displayedMonth.formatted(.dateTime.month(.wide).year())
+        displayedMonth.formatted(.dateTime.month(.wide).year().locale(AppLocale.current))
     }
 
     func goToPreviousMonth() { shiftMonth(by: -1) }
@@ -83,9 +83,12 @@ final class CalendarViewModel {
         return (0..<42).compactMap { calendar.date(byAdding: .day, value: $0, to: gridStart) }
     }
 
-    /// En-têtes des jours de la semaine (« lun », « mar »…), ordonnés par locale.
+    /// En-têtes des jours de la semaine (« lun », « mar »…), ordonnés par locale
+    /// et localisés selon la langue choisie.
     var weekdaySymbols: [String] {
-        let symbols = calendar.shortStandaloneWeekdaySymbols
+        var localizedCalendar = calendar
+        localizedCalendar.locale = AppLocale.current
+        let symbols = localizedCalendar.shortStandaloneWeekdaySymbols
         let first = calendar.firstWeekday - 1
         return Array(symbols[first...] + symbols[..<first])
     }

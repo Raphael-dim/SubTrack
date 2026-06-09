@@ -42,7 +42,6 @@ struct SubscriptionEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                previewSection
                 detailsSection(viewModel)
                 billingSection(viewModel)
                 trialAndPromoSection(viewModel)
@@ -70,39 +69,14 @@ struct SubscriptionEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Annuler") { dismiss() }
+                    Button(L.t("Annuler")) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Enregistrer", action: save)
+                    Button(L.t("Enregistrer"), action: save)
                         .fontWeight(.semibold)
                         .disabled(!viewModel.canSave)
                 }
             }
-        }
-    }
-
-    // MARK: Aperçu en direct
-
-    private var previewSection: some View {
-        Section {
-            HStack(spacing: Theme.Spacing.sm) {
-                IconBadge(
-                    systemName: viewModel.iconSystemName,
-                    tint: Color(hex: viewModel.accentColorHex),
-                    brandName: viewModel.name,
-                    domain: viewModel.brandDomain
-                )
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewModel.name.isEmpty ? "Nom de l'abonnement" : viewModel.name)
-                        .font(.headline)
-                        .foregroundStyle(viewModel.name.isEmpty ? Theme.Palette.textSecondary : Theme.Palette.textPrimary)
-                    Text("\(viewModel.parsedPrice?.currencyFormatted() ?? "—") · \(viewModel.billingCycle.displayName)")
-                        .font(.subheadline)
-                        .foregroundStyle(Theme.Palette.textSecondary)
-                }
-                Spacer()
-            }
-            .listRowBackground(Color.clear)
         }
     }
 
@@ -162,19 +136,28 @@ struct SubscriptionEditorView: View {
     // MARK: Détails
 
     private func detailsSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
-        Section("Détails") {
-            TextField("Nom", text: $vm.name)
-                .textInputAutocapitalization(.words)
-                .focused($nameFocused)
-                .anchorPreference(key: NameFieldBoundsKey.self, value: .bounds) { $0 }
+        Section(L.t("Détails")) {
+            HStack(spacing: Theme.Spacing.sm) {
+                IconBadge(
+                    systemName: vm.iconSystemName,
+                    tint: Color(hex: vm.accentColorHex),
+                    brandName: vm.name,
+                    domain: vm.brandDomain,
+                    size: 30
+                )
+                TextField(L.t("Nom"), text: $vm.name)
+                    .textInputAutocapitalization(.words)
+                    .focused($nameFocused)
+            }
+            .anchorPreference(key: NameFieldBoundsKey.self, value: .bounds) { $0 }
 
             HStack {
-                TextField("Prix", text: $vm.priceText)
+                TextField(L.t("Prix"), text: $vm.priceText)
                     .keyboardType(.decimalPad)
                 Text("€").foregroundStyle(Theme.Palette.textSecondary)
             }
 
-            Picker("Catégorie", selection: $vm.category) {
+            Picker(L.t("Catégorie"), selection: $vm.category) {
                 ForEach(SubscriptionCategory.allCases) { category in
                     Label(category.displayName, systemImage: category.symbolName).tag(category)
                 }
@@ -185,14 +168,14 @@ struct SubscriptionEditorView: View {
     // MARK: Facturation
 
     private func billingSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
-        Section("Facturation") {
-            Picker("Périodicité", selection: $vm.billingCycle) {
+        Section(L.t("Facturation")) {
+            Picker(L.t("Périodicité"), selection: $vm.billingCycle) {
                 ForEach(BillingCycle.allCases) { cycle in
                     Text(cycle.displayName).tag(cycle)
                 }
             }
-            DatePicker("Début de l'abonnement", selection: $vm.startDate, displayedComponents: .date)
-            DatePicker("Prochain prélèvement", selection: $vm.nextBillingDate, displayedComponents: .date)
+            DatePicker(L.t("Début de l'abonnement"), selection: $vm.startDate, displayedComponents: .date)
+            DatePicker(L.t("Prochain prélèvement"), selection: $vm.nextBillingDate, displayedComponents: .date)
         }
     }
 
@@ -200,35 +183,35 @@ struct SubscriptionEditorView: View {
 
     @ViewBuilder
     private func trialAndPromoSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
-        Section("Essai gratuit") {
+        Section(L.t("Essai gratuit")) {
             Toggle(isOn: $vm.hasTrial) {
-                Label("En période d'essai", systemImage: "gift.fill")
+                Label(L.t("En période d'essai"), systemImage: "gift.fill")
             }
             if vm.hasTrial {
-                DatePicker("Fin de l'essai", selection: $vm.trialEndDate, displayedComponents: .date)
+                DatePicker(L.t("Fin de l'essai"), selection: $vm.trialEndDate, displayedComponents: .date)
             }
         }
 
         Section {
             Toggle(isOn: $vm.hasPromo) {
-                Label("Prix promotionnel", systemImage: "tag.fill")
+                Label(L.t("Prix promotionnel"), systemImage: "tag.fill")
             }
             if vm.hasPromo {
                 HStack {
-                    TextField("Prix promo", text: $vm.promoPriceText)
+                    TextField(L.t("Prix promo"), text: $vm.promoPriceText)
                         .keyboardType(.decimalPad)
                     Text("€").foregroundStyle(Theme.Palette.textSecondary)
                 }
-                Toggle("Date de fin de promo", isOn: $vm.hasPromoEnd)
+                Toggle(L.t("Date de fin de promo"), isOn: $vm.hasPromoEnd)
                 if vm.hasPromoEnd {
-                    DatePicker("Fin de la promo", selection: $vm.promoEndDate, displayedComponents: .date)
+                    DatePicker(L.t("Fin de la promo"), selection: $vm.promoEndDate, displayedComponents: .date)
                 }
             }
         } header: {
-            Text("Remise")
+            Text(L.t("Remise"))
         } footer: {
             if vm.hasTrial {
-                Text("Pendant l'essai, le coût compté est de 0 €.")
+                Text(L.t("Pendant l'essai, le coût compté est de 0 €."))
             }
         }
     }
@@ -238,17 +221,17 @@ struct SubscriptionEditorView: View {
     private func notificationsSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
         Section {
             Toggle(isOn: $vm.notificationsEnabled) {
-                Label("Me rappeler les échéances", systemImage: "bell.badge.fill")
+                Label(L.t("Me rappeler les échéances"), systemImage: "bell.badge.fill")
             }
         } footer: {
-            Text("Le rappel global et son délai se règlent dans Réglages.")
+            Text(L.t("Le rappel global et son délai se règlent dans Réglages."))
         }
     }
 
     // MARK: Apparence (couleur + icône)
 
     private func appearanceSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
-        Section("Apparence") {
+        Section(L.t("Apparence")) {
             colorPicker(vm)
             symbolPicker(vm)
         }
@@ -256,7 +239,7 @@ struct SubscriptionEditorView: View {
 
     private func colorPicker(_ vm: SubscriptionEditorViewModel) -> some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-            Text("Couleur").font(.subheadline).foregroundStyle(Theme.Palette.textSecondary)
+            Text(L.t("Couleur")).font(.subheadline).foregroundStyle(Theme.Palette.textSecondary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Theme.Spacing.sm) {
                     ForEach(Self.presetColors, id: \.self) { hex in
@@ -286,7 +269,7 @@ struct SubscriptionEditorView: View {
 
     private func symbolPicker(_ vm: SubscriptionEditorViewModel) -> some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-            Text("Icône").font(.subheadline).foregroundStyle(Theme.Palette.textSecondary)
+            Text(L.t("Icône")).font(.subheadline).foregroundStyle(Theme.Palette.textSecondary)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: Theme.Spacing.sm) {
                 ForEach(Self.presetSymbols, id: \.self) { symbol in
                     let isSelected = vm.iconSystemName == symbol
@@ -315,9 +298,9 @@ struct SubscriptionEditorView: View {
 
     private func statusSection(@Bindable _ vm: SubscriptionEditorViewModel) -> some View {
         Section {
-            Toggle("Abonnement actif", isOn: $vm.isActive)
+            Toggle(L.t("Abonnement actif"), isOn: $vm.isActive)
         } footer: {
-            Text("Désactivez pour mettre en pause sans supprimer l'historique.")
+            Text(L.t("Désactivez pour mettre en pause sans supprimer l'historique."))
         }
     }
 

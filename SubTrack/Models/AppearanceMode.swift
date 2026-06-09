@@ -11,6 +11,10 @@ import SwiftUI
 /// Clés de préférences (centralisées pour éviter les chaînes magiques).
 enum PreferenceKey {
     static let appearanceMode = "appearanceMode"
+    /// Langue d'affichage (code ISO ou `system`).
+    static let appLanguage = "appLanguage"
+    /// Devise d'affichage globale (code ISO 4217).
+    static let currencyCode = "currencyCode"
     /// DEBUG uniquement : autorise le seed du catalogue de démo au démarrage.
     static let devSeedEnabled = "devSeedEnabled"
     /// Rappels locaux activés globalement.
@@ -28,9 +32,9 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .system: "Système"
-        case .light:  "Clair"
-        case .dark:   "Sombre"
+        case .system: L.t("Système")
+        case .light:  L.t("Clair")
+        case .dark:   L.t("Sombre")
         }
     }
 

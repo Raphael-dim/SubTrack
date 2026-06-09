@@ -17,13 +17,13 @@ enum BillingCycle: String, Codable, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    /// Libellé affiché à l'utilisateur (localisable ultérieurement).
+    /// Libellé affiché à l'utilisateur.
     var displayName: String {
         switch self {
-        case .weekly:    "Hebdomadaire"
-        case .monthly:   "Mensuel"
-        case .quarterly: "Trimestriel"
-        case .yearly:    "Annuel"
+        case .weekly:    L.t("Hebdomadaire")
+        case .monthly:   L.t("Mensuel")
+        case .quarterly: L.t("Trimestriel")
+        case .yearly:    L.t("Annuel")
         }
     }
 

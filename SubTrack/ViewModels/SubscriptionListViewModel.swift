@@ -23,9 +23,9 @@ final class SubscriptionListViewModel {
         var id: String { rawValue }
         var displayName: String {
             switch self {
-            case .nextBilling:     "Prochain prélèvement"
-            case .priceDescending: "Prix décroissant"
-            case .nameAscending:   "Nom (A→Z)"
+            case .nextBilling:     L.t("Prochain prélèvement")
+            case .priceDescending: L.t("Prix décroissant")
+            case .nameAscending:   L.t("Nom (A→Z)")
             }
         }
     }

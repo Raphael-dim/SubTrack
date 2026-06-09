@@ -20,7 +20,7 @@ struct StatsView: View {
         NavigationStack {
             content(viewModel)
                 .background(Theme.Palette.background.ignoresSafeArea())
-                .navigationTitle("Statistiques")
+                .navigationTitle(L.t("Statistiques"))
         }
         .onChange(of: subscriptions, initial: true) { _, newValue in
             viewModel.apply(subscriptions: newValue)
@@ -31,9 +31,9 @@ struct StatsView: View {
     private func content(_ viewModel: StatsViewModel) -> some View {
         if !viewModel.hasData {
             ContentUnavailableView(
-                "Aucune donnée",
+                L.t("Aucune donnée"),
                 systemImage: "chart.pie",
-                description: Text("Ajoutez des abonnements actifs pour voir vos statistiques.")
+                description: Text(L.t("Ajoutez des abonnements actifs pour voir vos statistiques."))
             )
         } else {
             ScrollView {
@@ -56,14 +56,14 @@ struct StatsView: View {
         GlassCard(padding: Theme.Spacing.lg) {
             HStack {
                 totalMetric(
-                    title: "Par mois",
+                    title: L.t("Par mois"),
                     value: viewModel.monthlyTotal.currencyFormatted()
                 )
                 Spacer()
                 Divider().frame(height: 40).overlay(Theme.Palette.glassBorder)
                 Spacer()
                 totalMetric(
-                    title: "Par an",
+                    title: L.t("Par an"),
                     value: viewModel.yearlyTotal.currencyFormatted(),
                     alignment: .trailing
                 )
@@ -87,7 +87,7 @@ struct StatsView: View {
     private func donutCard(_ viewModel: StatsViewModel) -> some View {
         GlassCard(padding: Theme.Spacing.lg) {
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-                Text("Répartition par catégorie")
+                Text(L.t("Répartition par catégorie"))
                     .font(.headline)
                     .foregroundStyle(Theme.Palette.textPrimary)
                 CategoryDonutChart(
@@ -122,7 +122,9 @@ struct StatsView: View {
                 Text(item.category.displayName)
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.Palette.textPrimary)
-                Text("\(item.subscriptionCount) abonnement\(item.subscriptionCount > 1 ? "s" : "")")
+                Text(item.subscriptionCount > 1
+                     ? L.t("%d abonnements", item.subscriptionCount)
+                     : L.t("%d abonnement", item.subscriptionCount))
                     .font(.caption)
                     .foregroundStyle(Theme.Palette.textSecondary)
             }
@@ -131,7 +133,7 @@ struct StatsView: View {
                 Text(item.monthlyTotal.currencyFormatted())
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.Palette.textPrimary)
-                Text(item.share.formatted(.percent.precision(.fractionLength(0))))
+                Text(item.share.formatted(.percent.precision(.fractionLength(0)).locale(AppLocale.current)))
                     .font(.caption)
                     .foregroundStyle(Theme.Palette.textSecondary)
             }
@@ -150,7 +152,7 @@ struct StatsView: View {
                     domain: subscription.brandDomain
                 )
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Poste le plus coûteux")
+                    Text(L.t("Poste le plus coûteux"))
                         .font(.caption)
                         .foregroundStyle(Theme.Palette.textSecondary)
                     Text(subscription.name)
@@ -158,7 +160,7 @@ struct StatsView: View {
                         .foregroundStyle(Theme.Palette.textPrimary)
                 }
                 Spacer()
-                Text("\(subscription.monthlyEquivalent.currencyFormatted()) / mois")
+                Text(L.t("%@ / mois", subscription.monthlyEquivalent.currencyFormatted()))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.Palette.textPrimary)
             }

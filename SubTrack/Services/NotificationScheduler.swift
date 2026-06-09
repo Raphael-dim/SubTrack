@@ -49,9 +49,9 @@ enum NotificationScheduler {
         guard let fireDate = fireDate(before: subscription.nextBillingDate, leadDays: leadDays) else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Prélèvement à venir"
+        content.title = L.t("Prélèvement à venir")
         let price = subscription.effectivePrice.currencyFormatted(currencyCode: subscription.currencyCode)
-        content.body = "\(subscription.name) — \(price) le \(subscription.nextBillingDate.formatted(date: .abbreviated, time: .omitted))"
+        content.body = L.t("%@ — %@ le %@", subscription.name, price, subscription.nextBillingDate.appFormattedDate())
         content.sound = .default
 
         add(content, at: fireDate, id: "\(subscription.id.uuidString)-billing", on: center)
@@ -62,8 +62,8 @@ enum NotificationScheduler {
               let fireDate = fireDate(before: trialEnd, leadDays: leadDays) else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Fin d'essai gratuit"
-        content.body = "\(subscription.name) : l'essai se termine le \(trialEnd.formatted(date: .abbreviated, time: .omitted)). Pensez à résilier si besoin."
+        content.title = L.t("Fin d'essai gratuit")
+        content.body = L.t("%@ : l'essai se termine le %@. Pensez à résilier si besoin.", subscription.name, trialEnd.appFormattedDate())
         content.sound = .default
 
         add(content, at: fireDate, id: "\(subscription.id.uuidString)-trial", on: center)

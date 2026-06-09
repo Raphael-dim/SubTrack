@@ -46,7 +46,7 @@ struct SubscriptionDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Modifier") { isPresentingEditor = true }
+                Button(L.t("Modifier")) { isPresentingEditor = true }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(role: .destructive) {
@@ -55,18 +55,18 @@ struct SubscriptionDetailView: View {
                     Image(systemName: "trash")
                 }
                 .tint(.red)
-                .accessibilityLabel("Supprimer")
+                .accessibilityLabel(L.t("Supprimer"))
             }
         }
         .confirmationDialog(
-            "Supprimer « \(subscription.name) » ?",
+            L.t("Supprimer « %@ » ?", subscription.name),
             isPresented: $isConfirmingDelete,
             titleVisibility: .visible
         ) {
-            Button("Supprimer", role: .destructive, action: deleteSubscription)
-            Button("Annuler", role: .cancel) {}
+            Button(L.t("Supprimer"), role: .destructive, action: deleteSubscription)
+            Button(L.t("Annuler"), role: .cancel) {}
         } message: {
-            Text("Cette action est définitive.")
+            Text(L.t("Cette action est définitive."))
         }
         .sheet(isPresented: $isPresentingEditor) {
             SubscriptionEditorView(
@@ -122,7 +122,7 @@ struct SubscriptionDetailView: View {
                     Text(subscription.price.currencyFormatted(currencyCode: subscription.currencyCode))
                         .font(.system(size: 40, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.Palette.textPrimary)
-                    Text("par \(subscription.billingCycle.displayName.lowercased())")
+                    Text(L.t("par %@", subscription.billingCycle.displayName.lowercased()))
                         .font(.subheadline)
                         .foregroundStyle(Theme.Palette.textSecondary)
                 }
@@ -131,12 +131,12 @@ struct SubscriptionDetailView: View {
 
                 HStack {
                     metric(
-                        title: "Soit / mois",
+                        title: L.t("Soit / mois"),
                         value: subscription.monthlyEquivalent.currencyFormatted(currencyCode: subscription.currencyCode)
                     )
                     Spacer()
                     metric(
-                        title: "Soit / an",
+                        title: L.t("Soit / an"),
                         value: subscription.yearlyEquivalent.currencyFormatted(currencyCode: subscription.currencyCode),
                         alignment: .trailing
                     )
@@ -163,30 +163,30 @@ struct SubscriptionDetailView: View {
             VStack(spacing: Theme.Spacing.sm) {
                 infoRow(
                     icon: "calendar.badge.clock",
-                    label: "Prochain prélèvement",
-                    value: subscription.nextBillingDate.formatted(date: .abbreviated, time: .omitted),
+                    label: L.t("Prochain prélèvement"),
+                    value: subscription.nextBillingDate.appFormattedDate(),
                     accessory: billingCountdown
                 )
                 Divider().overlay(Theme.Palette.glassBorder)
                 infoRow(
                     icon: "calendar",
-                    label: "Souscrit le",
-                    value: subscription.startDate.formatted(date: .abbreviated, time: .omitted)
+                    label: L.t("Souscrit le"),
+                    value: subscription.startDate.appFormattedDate()
                 )
                 Divider().overlay(Theme.Palette.glassBorder)
                 infoRow(
                     icon: subscription.isActive ? "checkmark.seal.fill" : "pause.circle.fill",
-                    label: "Statut",
-                    value: subscription.isActive ? "Actif" : "En pause"
+                    label: L.t("Statut"),
+                    value: subscription.isActive ? L.t("Actif") : L.t("En pause")
                 )
 
                 if subscription.isInTrial, let trialEnd = subscription.trialEndDate {
                     Divider().overlay(Theme.Palette.glassBorder)
                     infoRow(
                         icon: "gift.fill",
-                        label: "Essai gratuit",
-                        value: "jusqu'au \(trialEnd.formatted(date: .abbreviated, time: .omitted))",
-                        accessory: subscription.daysUntilTrialEnds.map { "dans \($0) j" }
+                        label: L.t("Essai gratuit"),
+                        value: L.t("jusqu'au %@", trialEnd.appFormattedDate()),
+                        accessory: subscription.daysUntilTrialEnds.map { L.t("dans %d j", $0) }
                     )
                 }
 
@@ -194,17 +194,17 @@ struct SubscriptionDetailView: View {
                     Divider().overlay(Theme.Palette.glassBorder)
                     infoRow(
                         icon: "tag.fill",
-                        label: "Prix promotionnel",
+                        label: L.t("Prix promotionnel"),
                         value: promo.currencyFormatted(currencyCode: subscription.currencyCode),
-                        accessory: subscription.promoEndDate.map { "jusqu'au \($0.formatted(date: .abbreviated, time: .omitted))" }
+                        accessory: subscription.promoEndDate.map { L.t("jusqu'au %@", $0.appFormattedDate()) }
                     )
                 }
 
                 Divider().overlay(Theme.Palette.glassBorder)
                 infoRow(
                     icon: subscription.notificationsEnabled ? "bell.fill" : "bell.slash.fill",
-                    label: "Rappels",
-                    value: subscription.notificationsEnabled ? "Activés" : "Désactivés"
+                    label: L.t("Rappels"),
+                    value: subscription.notificationsEnabled ? L.t("Activés") : L.t("Désactivés")
                 )
             }
         }
@@ -234,10 +234,10 @@ struct SubscriptionDetailView: View {
     private var billingCountdown: String {
         let days = subscription.daysUntilNextBilling
         switch days {
-        case ..<0: return "en retard"
-        case 0:    return "aujourd'hui"
-        case 1:    return "demain"
-        default:   return "dans \(days) jours"
+        case ..<0: return L.t("en retard")
+        case 0:    return L.t("aujourd'hui")
+        case 1:    return L.t("demain")
+        default:   return L.t("dans %d jours", days)
         }
     }
 
@@ -246,7 +246,7 @@ struct SubscriptionDetailView: View {
     private func notesCard(_ notes: String) -> some View {
         GlassCard {
             VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-                Label("Notes", systemImage: "note.text")
+                Label(L.t("Notes"), systemImage: "note.text")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.Palette.textSecondary)
                 Text(notes)
@@ -260,7 +260,7 @@ struct SubscriptionDetailView: View {
     private var pauseButton: some View {
         Button(action: toggleActive) {
             Label(
-                subscription.isActive ? "Mettre en pause" : "Réactiver",
+                subscription.isActive ? L.t("Mettre en pause") : L.t("Réactiver"),
                 systemImage: subscription.isActive ? "pause.fill" : "play.fill"
             )
             .font(.headline)

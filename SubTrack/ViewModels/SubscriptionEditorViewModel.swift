@@ -56,8 +56,8 @@ final class SubscriptionEditorViewModel {
 
     var navigationTitle: String {
         switch mode {
-        case .create: "Nouvel abonnement"
-        case .edit:   "Modifier"
+        case .create: L.t("Nouvel abonnement")
+        case .edit:   L.t("Modifier")
         }
     }
 

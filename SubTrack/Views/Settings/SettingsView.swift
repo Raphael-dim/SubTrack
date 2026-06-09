@@ -15,6 +15,8 @@ struct SettingsView: View {
     @Environment(\.haptics) private var haptics
 
     @AppStorage(PreferenceKey.appearanceMode) private var appearanceRaw = AppearanceMode.system.rawValue
+    @AppStorage(PreferenceKey.appLanguage) private var languageRaw = AppLanguage.system.rawValue
+    @AppStorage(PreferenceKey.currencyCode) private var currencyRaw = AppCurrency.eur.rawValue
     @AppStorage(PreferenceKey.notificationsEnabled) private var notificationsEnabled = false
     @AppStorage(PreferenceKey.reminderLeadDays) private var reminderLeadDays = 2
 
@@ -31,10 +33,25 @@ struct SettingsView: View {
         )
     }
 
+    private var language: Binding<AppLanguage> {
+        Binding(
+            get: { AppLanguage(rawValue: languageRaw) ?? .system },
+            set: { languageRaw = $0.rawValue }
+        )
+    }
+
+    private var currency: Binding<AppCurrency> {
+        Binding(
+            get: { AppCurrency(rawValue: currencyRaw) ?? .eur },
+            set: { currencyRaw = $0.rawValue }
+        )
+    }
+
     var body: some View {
         NavigationStack {
             Form {
                 appearanceSection
+                preferencesSection
                 notificationsSection
                 aboutSection
                 #if DEBUG
@@ -43,22 +60,52 @@ struct SettingsView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Theme.Palette.background.ignoresSafeArea())
-            .navigationTitle("Réglages")
+            .navigationTitle(L.t("Réglages"))
         }
     }
 
     // MARK: Apparence
 
     private var appearanceSection: some View {
-        Section("Apparence") {
+        Section(L.t("Apparence")) {
             Picker(selection: appearance) {
+                // Texte seul : l'icône du côté droit (valeur sélectionnée) est
+                // retirée ; l'icône de gauche (label « Thème ») est conservée.
                 ForEach(AppearanceMode.allCases) { mode in
-                    Label(mode.displayName, systemImage: mode.symbolName).tag(mode)
+                    Text(mode.displayName).tag(mode)
                 }
             } label: {
-                Label("Thème", systemImage: "paintpalette.fill")
+                Label(L.t("Thème"), systemImage: "paintpalette.fill")
             }
             .pickerStyle(.menu)
+        }
+    }
+
+    // MARK: Préférences (langue & devise)
+
+    private var preferencesSection: some View {
+        Section {
+            Picker(selection: language) {
+                ForEach(AppLanguage.allCases) { lang in
+                    Text(lang.displayName).tag(lang)
+                }
+            } label: {
+                Label(L.t("Langue"), systemImage: "globe")
+            }
+            .pickerStyle(.menu)
+
+            Picker(selection: currency) {
+                ForEach(AppCurrency.allCases) { cur in
+                    Text(cur.displayName).tag(cur)
+                }
+            } label: {
+                Label(L.t("Devise"), systemImage: "banknote.fill")
+            }
+            .pickerStyle(.menu)
+        } header: {
+            Text(L.t("Préférences"))
+        } footer: {
+            Text(L.t("La devise s'applique aux totaux. La langue ajuste le format des dates et des montants."))
         }
     }
 
@@ -67,7 +114,7 @@ struct SettingsView: View {
     private var notificationsSection: some View {
         Section {
             Toggle(isOn: $notificationsEnabled) {
-                Label("Rappels de prélèvement", systemImage: "bell.badge.fill")
+                Label(L.t("Rappels de prélèvement"), systemImage: "bell.badge.fill")
             }
             .onChange(of: notificationsEnabled) { _, enabled in
                 Task { await handleNotificationsToggle(enabled) }
@@ -79,24 +126,24 @@ struct SettingsView: View {
                         Text(leadLabel(days)).tag(days)
                     }
                 } label: {
-                    Label("Me prévenir", systemImage: "clock.fill")
+                    Label(L.t("Me prévenir"), systemImage: "clock.fill")
                 }
                 .onChange(of: reminderLeadDays) { _, _ in
                     Task { await NotificationScheduler.reschedule(for: subscriptions) }
                 }
             }
         } header: {
-            Text("Notifications")
+            Text(L.t("Notifications"))
         } footer: {
-            Text("Rappels 100 % locaux, avant chaque prélèvement et chaque fin d'essai. Aucune donnée n'est envoyée.")
+            Text(L.t("Rappels 100 % locaux, avant chaque prélèvement et chaque fin d'essai. Aucune donnée n'est envoyée."))
         }
     }
 
     private func leadLabel(_ days: Int) -> String {
         switch days {
-        case 0: "Le jour même"
-        case 1: "1 jour avant"
-        default: "\(days) jours avant"
+        case 0: L.t("Le jour même")
+        case 1: L.t("1 jour avant")
+        default: L.t("%d jours avant", days)
         }
     }
 
@@ -117,13 +164,13 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
-            LabeledContent("Abonnements", value: "\(subscriptions.count)")
-            LabeledContent("Version", value: appVersion)
-            Label("100 % local — aucune donnée ne quitte votre appareil.", systemImage: "lock.shield.fill")
+            LabeledContent(L.t("Abonnements"), value: "\(subscriptions.count)")
+            LabeledContent(L.t("Version"), value: appVersion)
+            Label(L.t("100 % local — aucune donnée ne quitte votre appareil."), systemImage: "lock.shield.fill")
                 .font(.footnote)
                 .foregroundStyle(Theme.Palette.textSecondary)
         } header: {
-            Text("À propos")
+            Text(L.t("À propos"))
         }
     }
 
@@ -141,24 +188,24 @@ struct SettingsView: View {
     private var developerSection: some View {
         Section {
             Toggle(isOn: $devSeedEnabled) {
-                Label("Seed au démarrage", systemImage: "shippingbox.fill")
+                Label(L.t("Seed au démarrage"), systemImage: "shippingbox.fill")
             }
 
             Button {
                 reseed()
             } label: {
-                Label("Recharger le catalogue de démo", systemImage: "arrow.clockwise")
+                Label(L.t("Recharger le catalogue de démo"), systemImage: "arrow.clockwise")
             }
 
             Button(role: .destructive) {
                 clearAll()
             } label: {
-                Label("Tout effacer", systemImage: "trash")
+                Label(L.t("Tout effacer"), systemImage: "trash")
             }
         } header: {
-            Text("Développeur")
+            Text(L.t("Développeur"))
         } footer: {
-            Text("Section visible uniquement en build de développement (DEBUG).")
+            Text(L.t("Section visible uniquement en build de développement (DEBUG)."))
         }
     }
 

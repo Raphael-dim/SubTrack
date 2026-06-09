@@ -21,10 +21,10 @@ enum SubscriptionCategory: String, Codable, CaseIterable, Identifiable, Sendable
     /// Libellé affiché à l'utilisateur.
     var displayName: String {
         switch self {
-        case .entertainment:       "Divertissement"
-        case .productivity:        "Productivité / Tech"
-        case .dailyLife:           "Vie quotidienne"
-        case .insuranceAndBanking: "Assurances / Banques"
+        case .entertainment:       L.t("Divertissement")
+        case .productivity:        L.t("Productivité / Tech")
+        case .dailyLife:           L.t("Vie quotidienne")
+        case .insuranceAndBanking: L.t("Assurances / Banques")
         }
     }
 
