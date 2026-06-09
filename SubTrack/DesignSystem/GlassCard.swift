@@ -14,15 +14,19 @@ struct GlassCard<Content: View>: View {
 
     var cornerRadius: CGFloat
     var padding: CGFloat
+    /// Teinte lavée dans le verre (cartes héros). `nil` = carte neutre.
+    var tint: Color?
     @ViewBuilder var content: Content
 
     init(
         cornerRadius: CGFloat = Theme.Radius.card,
         padding: CGFloat = Theme.Spacing.md,
+        tint: Color? = nil,
         @ViewBuilder content: () -> Content
     ) {
         self.cornerRadius = cornerRadius
         self.padding = padding
+        self.tint = tint
         self.content = content()
     }
 
@@ -30,7 +34,7 @@ struct GlassCard<Content: View>: View {
         content
             .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .glassBackground(cornerRadius: cornerRadius)
+            .glassBackground(cornerRadius: cornerRadius, tint: tint)
     }
 }
 
@@ -135,7 +139,7 @@ struct IconBadge: View {
 
 #Preview("GlassCard – Dark") {
     ZStack {
-        Theme.Palette.background.ignoresSafeArea()
+        AppBackground()
         VStack(spacing: Theme.Spacing.md) {
             GlassCard {
                 HStack(spacing: Theme.Spacing.sm) {

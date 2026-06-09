@@ -50,7 +50,7 @@ enum NotificationScheduler {
 
         let content = UNMutableNotificationContent()
         content.title = L.t("Prélèvement à venir")
-        let price = subscription.effectivePrice.currencyFormatted(currencyCode: subscription.currencyCode)
+        let price = subscription.effectivePrice.currencyFormatted()
         content.body = L.t("%@ — %@ le %@", subscription.name, price, subscription.nextBillingDate.appFormattedDate())
         content.sound = .default
 

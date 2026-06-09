@@ -10,12 +10,11 @@ import Foundation
 
 extension Decimal {
 
-    /// Représentation localisée d'un montant, ex. `"9,99 €"`.
-    /// - Parameter currencyCode: code ISO 4217 (ex. `"EUR"`). Par défaut, la
-    ///   devise globale choisie dans les Réglages. Le formatage (symbole,
-    ///   séparateurs) suit la langue sélectionnée via `AppLocale`.
-    func currencyFormatted(currencyCode: String = AppCurrency.current.code) -> String {
-        formatted(.currency(code: currencyCode).locale(AppLocale.current))
+    /// Représentation localisée d'un montant dans la devise de l'app, ex. `"9,99 €"`.
+    /// L'app est mono-devise : la devise et le formatage (symbole, séparateurs)
+    /// suivent les Réglages via `AppCurrency.current` et `AppLocale.current`.
+    func currencyFormatted() -> String {
+        formatted(.currency(code: AppCurrency.current.code).locale(AppLocale.current))
     }
 
     /// Conversion sûre vers `Double` pour les composants qui l'exigent

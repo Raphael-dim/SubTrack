@@ -59,7 +59,7 @@ struct SettingsView: View {
                 #endif
             }
             .scrollContentBackground(.hidden)
-            .background(Theme.Palette.background.ignoresSafeArea())
+            .appBackground()
             .navigationTitle(L.t("Réglages"))
         }
     }
@@ -164,8 +164,23 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
+            VStack(spacing: 8) {
+                if let icon = Bundle.main.appIcon {
+                    Image(uiImage: icon)
+                        .resizable()
+                        .frame(width: 72, height: 72)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                Text("SubTrack")
+                    .font(.headline)
+                Text(appVersion)
+                    .font(.caption)
+                    .foregroundStyle(Theme.Palette.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+
             LabeledContent(L.t("Abonnements"), value: "\(subscriptions.count)")
-            LabeledContent(L.t("Version"), value: appVersion)
             Label(L.t("100 % local — aucune donnée ne quitte votre appareil."), systemImage: "lock.shield.fill")
                 .font(.footnote)
                 .foregroundStyle(Theme.Palette.textSecondary)
@@ -211,7 +226,7 @@ struct SettingsView: View {
 
     private func reseed() {
         clearAll(playHaptic: false)
-        try? SeedDataProvider.seedIfNeeded(in: context)
+        _ = try? SeedDataProvider.seedIfNeeded(in: context)
         haptics.play(.success)
     }
 

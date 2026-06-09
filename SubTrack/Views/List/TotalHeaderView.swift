@@ -15,7 +15,7 @@ struct TotalHeaderView: View {
     let activeCount: Int
 
     var body: some View {
-        GlassCard(padding: Theme.Spacing.lg) {
+        GlassCard(padding: Theme.Spacing.lg, tint: Theme.Palette.appAccent) {
             VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
                 Text(L.t("Dépense mensuelle"))
                     .font(.subheadline.weight(.medium))
@@ -23,7 +23,13 @@ struct TotalHeaderView: View {
 
                 Text(monthlyTotal.currencyFormatted())
                     .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.Palette.textPrimary)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Theme.Palette.textPrimary, Theme.Palette.textPrimary.opacity(0.72)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .contentTransition(.numericText())
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
@@ -48,7 +54,7 @@ struct TotalHeaderView: View {
 
 #Preview {
     ZStack {
-        Theme.Palette.background.ignoresSafeArea()
+        AppBackground()
         TotalHeaderView(monthlyTotal: 287.42, yearlyTotal: 3449.04, activeCount: 23)
             .padding()
     }

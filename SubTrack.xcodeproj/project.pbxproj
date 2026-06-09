@@ -17,6 +17,7 @@
 		3E8E365EC914FCE9B02A5897 /* SubscriptionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17E041215CCF9AB210FFFCA /* SubscriptionDetailView.swift */; };
 		418C1AE18B52FB99B2D783BD /* ServiceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0F2807822022E81A4B2C49 /* ServiceCatalog.swift */; };
 		41ED13564DA5AE5B9988A346 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5F73A609CC3D72355E9481 /* GlassCard.swift */; };
+		41ED13574DA5AE5B9988A347 /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5F73A709CC3D72355E9482 /* AppBackground.swift */; };
 		433BBAC2662111110220FA85 /* SubscriptionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C33B4DB7E1F09BCE11AA601 /* SubscriptionListViewModel.swift */; };
 		4AC9EF5E8BE2006B9ACE5807 /* SubscriptionEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26720373FC7907C0EBDEC01F /* SubscriptionEditorViewModel.swift */; };
 		525C2FC1465EEDC2E472BAB2 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21089B2F700D636A2925652D /* NotificationScheduler.swift */; };
@@ -24,6 +25,7 @@
 		619A25F66F11B6B9097B699E /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07F6E11991A929904925E63 /* HapticsManager.swift */; };
 		61EBC7E5115AFE90001AB058 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34C3748C3E3FE788EAAE4D1 /* SubscriptionService.swift */; };
 		693C095FE6ADC7A22F63F21A /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B408A7F04CEDAA31AFF4D9D /* Color+Hex.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* Bundle+AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F2A3 /* Bundle+AppIcon.swift */; };
 		6DAA9B09D56DC8A8E711CC94 /* AppCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6ED4DC07BD308BABB682D43 /* AppCurrency.swift */; };
 		741940425DB01865F6BD54B7 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00286F9CC36F7B35E2804A0F /* Theme.swift */; };
 		7482F1373139DCBF6DC50F8A /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8127F82EF268048FF04AC55 /* SubscriptionListView.swift */; };
@@ -61,8 +63,10 @@
 		29E08A50EC984FCE06BBAD9B /* CategoryDonutChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDonutChart.swift; sourceTree = "<group>"; };
 		3C33B4DB7E1F09BCE11AA601 /* SubscriptionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListViewModel.swift; sourceTree = "<group>"; };
 		3F5F73A609CC3D72355E9481 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
+		3F5F73A709CC3D72355E9482 /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
 		4A03F6DCC5E17C66AF141756 /* BrandLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandLogo.swift; sourceTree = "<group>"; };
 		4B408A7F04CEDAA31AFF4D9D /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* Bundle+AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+AppIcon.swift"; sourceTree = "<group>"; };
 		5144BF5EE43D5D141BD19553 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		592EF6005332C6826A2DE634 /* String+Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Brand.swift"; sourceTree = "<group>"; };
 		5B6C81B62426DF3B1F61BDB2 /* AppearanceMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceMode.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				4B408A7F04CEDAA31AFF4D9D /* Color+Hex.swift */,
+				B2C3D4E5F6A7B8C9D0E1F2A3 /* Bundle+AppIcon.swift */,
 				8C52BB069E04BF76A90365F6 /* Decimal+Currency.swift */,
 				DF9B21BBB563833BD9D91D90 /* Localization.swift */,
 				592EF6005332C6826A2DE634 /* String+Brand.swift */,
@@ -282,6 +287,7 @@
 		F853A02C740A898FFF3BD8B8 /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3F5F73A709CC3D72355E9482 /* AppBackground.swift */,
 				3F5F73A609CC3D72355E9481 /* GlassCard.swift */,
 				00286F9CC36F7B35E2804A0F /* Theme.swift */,
 				5889EE6EE4C33EE48F2D7272 /* Modifiers */,
@@ -369,9 +375,11 @@
 				7D9601DFEF1CFB1B7BD182C9 /* CalendarViewModel.swift in Sources */,
 				0DCA55DDB336E6E6815E3E9D /* CategoryDonutChart.swift in Sources */,
 				693C095FE6ADC7A22F63F21A /* Color+Hex.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* Bundle+AppIcon.swift in Sources */,
 				3D32F9189F1D42272EBF8DA7 /* Decimal+Currency.swift in Sources */,
 				EA451609FB60639E5992B8B3 /* GlassBackgroundModifier.swift in Sources */,
 				41ED13564DA5AE5B9988A346 /* GlassCard.swift in Sources */,
+				41ED13574DA5AE5B9988A347 /* AppBackground.swift in Sources */,
 				2A5C92C721FD57E5003753B5 /* HapticEnvironment.swift in Sources */,
 				619A25F66F11B6B9097B699E /* HapticsManager.swift in Sources */,
 				C3D67B6F97D234E371EDF1C0 /* Localization.swift in Sources */,

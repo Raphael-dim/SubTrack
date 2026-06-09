@@ -2,9 +2,9 @@
 //  AppCurrency.swift
 //  SubTrack
 //
-//  Devise d'affichage globale choisie par l'utilisateur, persistée via
-//  @AppStorage. Utilisée par défaut pour les totaux agrégés (mois / année).
-//  Chaque abonnement conserve par ailleurs sa propre devise.
+//  Devise unique de l'app, choisie par l'utilisateur et persistée via
+//  @AppStorage. L'app est mono-devise : cette devise s'applique partout
+//  (montants des abonnements comme totaux agrégés).
 //
 
 import Foundation
@@ -21,6 +21,17 @@ enum AppCurrency: String, CaseIterable, Identifiable {
 
     /// Code ISO 4217 transmis au formatage monétaire.
     var code: String { rawValue }
+
+    /// Symbole court de la devise (ex. « € », « $ », « CHF »).
+    var symbol: String {
+        switch self {
+        case .eur:        "€"
+        case .usd, .cad:  "$"
+        case .gbp:        "£"
+        case .chf:        "CHF"
+        case .jpy:        "¥"
+        }
+    }
 
     var displayName: String {
         switch self {

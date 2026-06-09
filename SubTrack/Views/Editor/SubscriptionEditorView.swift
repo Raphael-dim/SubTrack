@@ -52,7 +52,7 @@ struct SubscriptionEditorView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(Theme.Palette.background.ignoresSafeArea())
+            .appBackground()
             // Menu flottant de suggestions, ancré juste sous le champ « Nom ».
             .overlayPreferenceValue(NameFieldBoundsKey.self) { anchor in
                 GeometryReader { proxy in
@@ -154,7 +154,7 @@ struct SubscriptionEditorView: View {
             HStack {
                 TextField(L.t("Prix"), text: $vm.priceText)
                     .keyboardType(.decimalPad)
-                Text("€").foregroundStyle(Theme.Palette.textSecondary)
+                Text(AppCurrency.current.symbol).foregroundStyle(Theme.Palette.textSecondary)
             }
 
             Picker(L.t("Catégorie"), selection: $vm.category) {
@@ -200,7 +200,7 @@ struct SubscriptionEditorView: View {
                 HStack {
                     TextField(L.t("Prix promo"), text: $vm.promoPriceText)
                         .keyboardType(.decimalPad)
-                    Text("€").foregroundStyle(Theme.Palette.textSecondary)
+                    Text(AppCurrency.current.symbol).foregroundStyle(Theme.Palette.textSecondary)
                 }
                 Toggle(L.t("Date de fin de promo"), isOn: $vm.hasPromoEnd)
                 if vm.hasPromoEnd {
@@ -271,11 +271,17 @@ struct SubscriptionEditorView: View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
             Text(L.t("Icône")).font(.subheadline).foregroundStyle(Theme.Palette.textSecondary)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: Theme.Spacing.sm) {
+                // Logo de marque connu : première tuile sélectionnable. Elle est
+                // active à l'ouverture tant que l'utilisateur n'a pas choisi un
+                // SF Symbol — c'est ce qui correspond au logo réellement affiché.
+                if vm.hasBrandLogoOption {
+                    brandLogoCell(vm)
+                }
                 ForEach(Self.presetSymbols, id: \.self) { symbol in
-                    let isSelected = vm.iconSystemName == symbol
+                    // Tant que le logo de marque est actif, aucun symbole n'est surligné.
+                    let isSelected = !vm.usesBrandLogo && vm.iconSystemName == symbol
                     Button {
-                        vm.iconSystemName = symbol
-                        vm.brandDomain = nil // le SF Symbol choisi remplace tout logo
+                        vm.selectSymbol(symbol)
                         haptics.play(.selection)
                     } label: {
                         Image(systemName: symbol)
@@ -292,6 +298,28 @@ struct SubscriptionEditorView: View {
             }
             .padding(.vertical, Theme.Spacing.xxs)
         }
+    }
+
+    /// Tuile « logo de marque » : affiche le vrai logo distant et, sélectionnée,
+    /// le réactive comme icône de l'abonnement (prioritaire sur les SF Symbols).
+    private func brandLogoCell(_ vm: SubscriptionEditorViewModel) -> some View {
+        Button {
+            vm.selectBrandLogo()
+            haptics.play(.selection)
+        } label: {
+            IconBadge(
+                systemName: vm.iconSystemName,
+                tint: Color(hex: vm.accentColorHex),
+                brandName: vm.name,
+                domain: vm.knownBrandDomain,
+                size: 40
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: Theme.Radius.icon, style: .continuous)
+                    .strokeBorder(Color(hex: vm.accentColorHex), lineWidth: vm.usesBrandLogo ? 2.5 : 0)
+            }
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: Statut (édition uniquement)

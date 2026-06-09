@@ -41,7 +41,7 @@ struct SubscriptionDetailView: View {
             }
             .padding(Theme.Spacing.md)
         }
-        .background(Theme.Palette.background.ignoresSafeArea())
+        .appBackground()
         .navigationTitle(subscription.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -89,6 +89,13 @@ struct SubscriptionDetailView: View {
                 domain: subscription.brandDomain,
                 size: 80
             )
+            .background {
+                // Halo discret de la couleur de marque, façon App Store.
+                Circle()
+                    .fill(tint.opacity(0.30))
+                    .frame(width: 130, height: 130)
+                    .blur(radius: 42)
+            }
 
             Text(subscription.name)
                 .font(.title.weight(.bold))
@@ -119,9 +126,15 @@ struct SubscriptionDetailView: View {
         GlassCard(padding: Theme.Spacing.lg) {
             VStack(alignment: .leading, spacing: Theme.Spacing.md) {
                 VStack(alignment: .leading, spacing: Theme.Spacing.xxs) {
-                    Text(subscription.price.currencyFormatted(currencyCode: subscription.currencyCode))
+                    Text(subscription.price.currencyFormatted())
                         .font(.system(size: 40, weight: .bold, design: .rounded))
-                        .foregroundStyle(Theme.Palette.textPrimary)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Theme.Palette.textPrimary, Theme.Palette.textPrimary.opacity(0.72)],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
                     Text(L.t("par %@", subscription.billingCycle.displayName.lowercased()))
                         .font(.subheadline)
                         .foregroundStyle(Theme.Palette.textSecondary)
@@ -132,12 +145,12 @@ struct SubscriptionDetailView: View {
                 HStack {
                     metric(
                         title: L.t("Soit / mois"),
-                        value: subscription.monthlyEquivalent.currencyFormatted(currencyCode: subscription.currencyCode)
+                        value: subscription.monthlyEquivalent.currencyFormatted()
                     )
                     Spacer()
                     metric(
                         title: L.t("Soit / an"),
-                        value: subscription.yearlyEquivalent.currencyFormatted(currencyCode: subscription.currencyCode),
+                        value: subscription.yearlyEquivalent.currencyFormatted(),
                         alignment: .trailing
                     )
                 }
@@ -195,7 +208,7 @@ struct SubscriptionDetailView: View {
                     infoRow(
                         icon: "tag.fill",
                         label: L.t("Prix promotionnel"),
-                        value: promo.currencyFormatted(currencyCode: subscription.currencyCode),
+                        value: promo.currencyFormatted(),
                         accessory: subscription.promoEndDate.map { L.t("jusqu'au %@", $0.appFormattedDate()) }
                     )
                 }

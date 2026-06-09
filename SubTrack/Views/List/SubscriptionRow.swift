@@ -59,8 +59,8 @@ struct SubscriptionRow: View {
                 .lineLimit(1)
         } else if subscription.isPromoActive, let promo = subscription.promoPrice {
             HStack(spacing: 4) {
-                Text(promo.currencyFormatted(currencyCode: subscription.currencyCode))
-                Text(subscription.price.currencyFormatted(currencyCode: subscription.currencyCode))
+                Text(promo.currencyFormatted())
+                Text(subscription.price.currencyFormatted())
                     .strikethrough()
                     .foregroundStyle(Theme.Palette.textSecondary.opacity(0.7))
                 Text(L.t("· %@", cycle)).foregroundStyle(Theme.Palette.textSecondary)
@@ -69,7 +69,7 @@ struct SubscriptionRow: View {
             .foregroundStyle(Theme.Palette.textSecondary)
             .lineLimit(1)
         } else {
-            Text(L.t("%@ · %@", subscription.price.currencyFormatted(currencyCode: subscription.currencyCode), cycle))
+            Text(L.t("%@ · %@", subscription.price.currencyFormatted(), cycle))
                 .font(.subheadline)
                 .foregroundStyle(Theme.Palette.textSecondary)
                 .lineLimit(1)
@@ -130,7 +130,7 @@ struct SubscriptionRow: View {
 
 #Preview {
     ZStack {
-        Theme.Palette.background.ignoresSafeArea()
+        AppBackground()
         VStack {
             SubscriptionRow(subscription: SeedDataProvider.makeCatalog()[0])
             SubscriptionRow(subscription: SeedDataProvider.makeCatalog()[12])

@@ -28,7 +28,7 @@ struct CalendarView: View {
                 }
                 .padding(Theme.Spacing.md)
             }
-            .background(Theme.Palette.background.ignoresSafeArea())
+            .appBackground()
             .navigationTitle(L.t("Calendrier"))
             .navigationDestination(for: Subscription.self) { subscription in
                 SubscriptionDetailView(subscription: subscription)
@@ -176,7 +176,7 @@ struct CalendarView: View {
                                 Text(sub.name)
                                     .foregroundStyle(Theme.Palette.textPrimary)
                                 Spacer()
-                                Text(sub.effectivePrice.currencyFormatted(currencyCode: sub.currencyCode))
+                                Text(sub.effectivePrice.currencyFormatted())
                                     .font(.subheadline)
                                     .foregroundStyle(Theme.Palette.textSecondary)
                                 Image(systemName: "chevron.right")

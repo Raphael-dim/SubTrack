@@ -19,7 +19,6 @@ final class Subscription {
 
     var name: String
     var price: Decimal
-    var currencyCode: String
 
     /// Périodicité de facturation. Enum `Codable` persisté tel quel.
     var billingCycle: BillingCycle
@@ -74,7 +73,6 @@ final class Subscription {
         id: UUID = UUID(),
         name: String,
         price: Decimal,
-        currencyCode: String = "EUR",
         billingCycle: BillingCycle,
         category: SubscriptionCategory,
         nextBillingDate: Date,
@@ -94,7 +92,6 @@ final class Subscription {
         self.id = id
         self.name = name
         self.price = price
-        self.currencyCode = currencyCode
         self.billingCycle = billingCycle
         self.category = category
         self.nextBillingDate = nextBillingDate

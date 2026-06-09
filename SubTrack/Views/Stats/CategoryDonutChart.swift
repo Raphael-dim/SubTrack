@@ -66,7 +66,7 @@ struct CategoryDonutChart: View {
 #Preview {
     let catalog = SeedDataProvider.makeCatalog()
     return ZStack {
-        Theme.Palette.background.ignoresSafeArea()
+        AppBackground()
         CategoryDonutChart(
             breakdown: SubscriptionMetrics.breakdownByCategory(for: catalog),
             centerTotal: SubscriptionMetrics.monthlyTotal(for: catalog)

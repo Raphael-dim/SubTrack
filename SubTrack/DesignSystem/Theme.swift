@@ -54,30 +54,70 @@ enum Theme {
         /// Fond d'écran principal (sous le verre).
         static let background = dynamic(light: 0xF5F5F7, dark: 0x0A0A0C)
 
+        /// Halo ambiant principal du fond (indigo, en haut).
+        static let backgroundGlowPrimary = dynamic(
+            light: 0x5E5CE6, lightAlpha: 0.09,
+            dark: 0x7D7AFF, darkAlpha: 0.13
+        )
+
+        /// Halo ambiant secondaire du fond (cyan, en bas à droite).
+        static let backgroundGlowSecondary = dynamic(
+            light: 0x32ADE6, lightAlpha: 0.06,
+            dark: 0x5AC8FA, darkAlpha: 0.07
+        )
+
         /// Texte primaire (titres, montants).
         static let textPrimary = dynamic(light: 0x0A0A0C, dark: 0xF5F5F7)
 
         /// Texte secondaire (métadonnées).
         static let textSecondary = dynamic(light: 0x6E6E73, dark: 0x98989D)
 
-        /// Liseré « verre » posé sur les cartes.
-        static let glassBorder = Color.white.opacity(0.10)
+        /// Séparateurs et liserés fins (visibles dans les deux modes).
+        static let glassBorder = dynamic(
+            light: 0x000000, lightAlpha: 0.06,
+            dark: 0xFFFFFF, darkAlpha: 0.10
+        )
+
+        /// Haut du liseré « rim de verre » des cartes (plus lumineux).
+        static let glassEdgeTop = dynamic(
+            light: 0xFFFFFF, lightAlpha: 0.60,
+            dark: 0xFFFFFF, darkAlpha: 0.22
+        )
+
+        /// Bas du liseré « rim de verre » des cartes (s'éteint).
+        static let glassEdgeBottom = dynamic(
+            light: 0xFFFFFF, lightAlpha: 0.12,
+            dark: 0xFFFFFF, darkAlpha: 0.04
+        )
 
         /// Reflet supérieur discret des cartes.
-        static let glassHighlight = Color.white.opacity(0.06)
+        static let glassHighlight = dynamic(
+            light: 0xFFFFFF, lightAlpha: 0.30,
+            dark: 0xFFFFFF, darkAlpha: 0.07
+        )
+
+        /// Ombre portée des cartes (douce en clair, plus présente en sombre).
+        static let cardShadow = dynamic(
+            light: 0x000000, lightAlpha: 0.08,
+            dark: 0x000000, darkAlpha: 0.32
+        )
     }
 
     // MARK: Helpers
 
     /// Crée une `Color` qui s'adapte automatiquement au mode clair/sombre.
-    private static func dynamic(light: UInt64, dark: UInt64) -> Color {
+    private static func dynamic(
+        light: UInt64, lightAlpha: CGFloat = 1,
+        dark: UInt64, darkAlpha: CGFloat = 1
+    ) -> Color {
         Color(uiColor: UIColor { traits in
-            let hex = traits.userInterfaceStyle == .dark ? dark : light
+            let isDark = traits.userInterfaceStyle == .dark
+            let hex = isDark ? dark : light
             return UIColor(
                 red: CGFloat((hex >> 16) & 0xFF) / 255,
                 green: CGFloat((hex >> 8) & 0xFF) / 255,
                 blue: CGFloat(hex & 0xFF) / 255,
-                alpha: 1
+                alpha: isDark ? darkAlpha : lightAlpha
             )
         })
     }

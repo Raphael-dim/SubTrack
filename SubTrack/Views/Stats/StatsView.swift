@@ -19,7 +19,7 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             content(viewModel)
-                .background(Theme.Palette.background.ignoresSafeArea())
+                .appBackground()
                 .navigationTitle(L.t("Statistiques"))
         }
         .onChange(of: subscriptions, initial: true) { _, newValue in

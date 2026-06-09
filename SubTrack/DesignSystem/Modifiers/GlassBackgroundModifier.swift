@@ -13,12 +13,27 @@ struct GlassBackgroundModifier: ViewModifier {
 
     var cornerRadius: CGFloat = Theme.Radius.card
     var material: Material = .regularMaterial
+    /// Teinte optionnelle lavée dans le verre (cartes héros). `nil` = neutre.
+    var tint: Color? = nil
 
     func body(content: Content) -> some View {
         content
             .background {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(material)
+                ZStack {
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .fill(material)
+                    if let tint {
+                        // Lavis coloré très léger, plus présent en haut à gauche.
+                        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [tint.opacity(0.16), tint.opacity(0.04)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+                }
             }
             .overlay {
                 // Reflet supérieur discret : dégradé blanc qui s'éteint vers le bas.
@@ -33,12 +48,19 @@ struct GlassBackgroundModifier: ViewModifier {
                     .allowsHitTesting(false)
             }
             .overlay {
-                // Liseré « verre » pour détacher la carte du fond.
+                // Rim de verre : liseré plus lumineux en haut, qui s'éteint en bas.
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(Theme.Palette.glassBorder, lineWidth: Theme.Size.hairline)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [Theme.Palette.glassEdgeTop, Theme.Palette.glassEdgeBottom],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ),
+                        lineWidth: Theme.Size.hairline
+                    )
             }
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .shadow(color: .black.opacity(0.18), radius: 18, x: 0, y: 10)
+            .shadow(color: Theme.Palette.cardShadow, radius: 16, x: 0, y: 8)
     }
 }
 
@@ -48,10 +70,12 @@ extension View {
     /// - Parameters:
     ///   - cornerRadius: rayon des coins (défaut : carte).
     ///   - material: épaisseur du flou (défaut : `.regularMaterial`).
+    ///   - tint: teinte lavée dans le verre (défaut : aucune).
     func glassBackground(
         cornerRadius: CGFloat = Theme.Radius.card,
-        material: Material = .regularMaterial
+        material: Material = .regularMaterial,
+        tint: Color? = nil
     ) -> some View {
-        modifier(GlassBackgroundModifier(cornerRadius: cornerRadius, material: material))
+        modifier(GlassBackgroundModifier(cornerRadius: cornerRadius, material: material, tint: tint))
     }
 }

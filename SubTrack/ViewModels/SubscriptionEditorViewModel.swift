@@ -29,9 +29,13 @@ final class SubscriptionEditorViewModel {
     var nextBillingDate: Date
     var startDate: Date
     var accentColorHex: String
-    /// Domaine de marque (pour le logo distant) conservé tel quel ; remis à
-    /// `nil` dès que l'utilisateur choisit un SF Symbol dans la grille.
+    /// Domaine de marque effectivement persisté : pilote l'affichage du logo
+    /// distant. Remis à `nil` dès que l'utilisateur choisit un SF Symbol.
     var brandDomain: String?
+    /// Domaine de marque *connu* pour cet abonnement (issu de l'édition ou d'une
+    /// suggestion appliquée). Distinct de `brandDomain` : il survit au choix d'un
+    /// SF Symbol pour permettre de réactiver le logo de marque ensuite.
+    private(set) var knownBrandDomain: String?
     var iconSystemName: String
     var notes: String
     var isActive: Bool
@@ -84,6 +88,7 @@ final class SubscriptionEditorViewModel {
             startDate = .now
             accentColorHex = SubscriptionCategory.entertainment.accentColorHex
             brandDomain = nil
+            knownBrandDomain = nil
             iconSystemName = "creditcard.fill"
             notes = ""
             isActive = true
@@ -104,6 +109,7 @@ final class SubscriptionEditorViewModel {
             startDate = subscription.startDate
             accentColorHex = subscription.accentColorHex
             brandDomain = subscription.brandDomain
+            knownBrandDomain = subscription.brandDomain
             iconSystemName = subscription.iconSystemName
             notes = subscription.notes ?? ""
             isActive = subscription.isActive
@@ -128,12 +134,32 @@ final class SubscriptionEditorViewModel {
         category = template.category
         accentColorHex = template.accentColorHex
         brandDomain = template.brandDomain
+        knownBrandDomain = template.brandDomain
         iconSystemName = template.iconSystemName
     }
 
     /// Suggestions de services connus correspondant au nom en cours de saisie.
     var suggestions: [ServiceTemplate] {
         ServiceCatalog.matching(name)
+    }
+
+    // MARK: Sélection d'icône (logo de marque vs SF Symbol)
+
+    /// `true` si le logo de marque distant est l'icône active.
+    var usesBrandLogo: Bool { !(brandDomain ?? "").isEmpty }
+
+    /// `true` si un logo de marque connu peut être (ré)activé pour cet abonnement.
+    var hasBrandLogoOption: Bool { !(knownBrandDomain ?? "").isEmpty }
+
+    /// Réactive le logo de marque connu (remplace l'éventuel SF Symbol affiché).
+    func selectBrandLogo() {
+        brandDomain = knownBrandDomain
+    }
+
+    /// Choisit un SF Symbol et désactive le logo de marque (le symbole prime).
+    func selectSymbol(_ symbol: String) {
+        iconSystemName = symbol
+        brandDomain = nil
     }
 
     // MARK: Validation

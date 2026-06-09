@@ -32,7 +32,7 @@ struct SubscriptionListView: View {
     var body: some View {
         NavigationStack {
             content(viewModel)
-                .background(Theme.Palette.background.ignoresSafeArea())
+                .appBackground()
                 .navigationTitle(L.t("Abonnements"))
                 .toolbar { toolbarContent }
                 .navigationDestination(for: Subscription.self) { subscription in
@@ -233,7 +233,7 @@ private struct CategoryFilterBar: View {
                 .padding(.vertical, Theme.Spacing.xs)
                 .background {
                     Capsule(style: .continuous)
-                        .fill(isOn ? AnyShapeStyle(tint) : AnyShapeStyle(.regularMaterial))
+                        .fill(isOn ? AnyShapeStyle(tint.gradient) : AnyShapeStyle(.regularMaterial))
                 }
                 .overlay {
                     Capsule(style: .continuous)
